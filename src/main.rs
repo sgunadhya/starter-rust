@@ -30,31 +30,44 @@ impl State {
     }
 
     fn main_menu(&mut self, ctx: &mut BTerm) {
-        ctx.print_centered(10, "Welcome to the game!");
-        ctx.print_centered(11, "Press [Enter] to start.");
-        ctx.print_centered(12, "Press [Esc] to quit.");
-        if ctx.key == Some(VirtualKeyCode::Return) {
-            self.mode = GameMode::Playing;
-        }
-        if ctx.key == Some(VirtualKeyCode::Escape) {
-            ctx.quitting = true;
+        ctx.print_centered(5, "Welcome to the game!");
+        ctx.print_centered(8, "Press [Enter] to start.");
+        ctx.print_centered(9, "Press [Esc] to quit.");
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::Return => self.mode = GameMode::Playing,
+                VirtualKeyCode::Escape => ctx.quitting = true,
+                _ => {}
+            }
         }
     }
 
     fn play(&mut self, ctx: &mut BTerm) {
         ctx.print_centered(10, "Playing the game!");
         ctx.print_centered(11, "Press [Esc] to quit.");
-        if ctx.key == Some(VirtualKeyCode::Escape) {
-            self.mode = GameMode::End;
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::Escape => self.mode = GameMode::End,
+                _ => {}
+            }
         }
     }
 
     fn dead(&mut self, ctx: &mut BTerm) {
-        ctx.print_centered(10, "Thanks for playing!");
-        ctx.print_centered(11, "Press [Esc] to quit.");
-        if ctx.key == Some(VirtualKeyCode::Escape) {
-            ctx.quitting = true;
+        ctx.print_centered(5, "Thanks for playing!");
+        ctx.print_centered(8, "Press [P] to Play Again.");
+        ctx.print_centered(19, "Press [Esc] to quit.");
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::P => self.restart(),
+                VirtualKeyCode::Escape => ctx.quitting = true,
+                _ => {}
+            }
         }
+    }
+
+    fn restart(&mut self) {
+        self.mode = GameMode::Playing;
     }
 }
 
