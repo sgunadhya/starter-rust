@@ -22,7 +22,6 @@ impl GameState for State {
 }
 
 impl State {
-
     fn new() -> Self {
         State {
             mode: GameMode::Menu,
